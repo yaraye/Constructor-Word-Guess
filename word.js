@@ -1,7 +1,7 @@
 var Letter = require("./letter.js");
 
 
-function Word(wordString) {
+function word(wordString) {
     //chose word from the list
     this.wordString=wordString;
     //random word choice
@@ -27,4 +27,8 @@ function Word(wordString) {
 
 //Export the Word constructor as a reference in index.js.
 
-module.exports = Word;
+module.exports = word;
+
+
+
+

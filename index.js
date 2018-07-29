@@ -1,4 +1,4 @@
-var Word = require('./Word.js');
+var word = require('./word.js');
 var inquirer = require('inquirer');
 
 var worldReligions=[
@@ -9,21 +9,27 @@ var worldReligions=[
 ]
 
 
-
 //Counters for wins, losses, and guesses remaining.
 var wins = 0;
 var losses = 0;
 var guessesRemaining = 9;
 var userGuess = "";
-var lettersAlreadyGuessedList = "";
-var lettersAlreadyGuessedListArray = [];
+var guessedWord = "";
+var guessedWordArray = [];
 var score=0;
 
+// Randomly selects a word and uses the `Word` constructor to store it
+    //once you enter return it doesn't go below it, so startQuestion() never runs  
+var index = Math.floor(Math.random() * worldReligions.length);
+console.log(index);
 
 
 //Use Inquirer package to display game confirmation prompt to user.
 function startQuestion() {
-	inquirer.prompt[
+
+    console.log("Inquirer started");
+
+	inquirer.prompt([
 	 {
 	 	type: 'text',
 	 	name: 'playerName',
@@ -34,67 +40,93 @@ function startQuestion() {
 	    name: 'readyToPlay',
 	    message: 'Are you ready to play?',
 	    default: true
-	  },{
-	validate:function(){
-		//If the user confirms to play, start game.
-		if (answers.readyToPlay){
-			console.log(gameTextColor("Great! let's name all the major Religion in the world  , " + answers.playerName + ". "));
-			startGame();
-		}
-
-		else {
-			//If the user don't want to play, exit game.
-			console.log(gameTextColor("Maybe next time, " + answers.playerName + "!"));
-			return;
-        }
-    }
-}, {
-        name: 'letterGuessed',
-        message: 'Guess a letter',
-        validate: function (value) {
-            var valid = (value.length === 1) && ('abcdefghijklmnopqrstuvwxyz'.
-            indexOf(value.charAt(0).toUpperCase() + value.slice(1))!== -1); // fix letter logic later
-            return valid || 'Please enter a single letter';
-        },
-        when: function () {
-            return (!userGuess.guessed() && guessesRemaining > 0);
-        }
-    },
-    {
-        type: 'confirm',
-        name: 'playAgain',
-        message: 'Want to play again?',
-        // default: true,
-        when: function () {
-            return (userGuess.guessed() || guessesRemaining <= 0);
-        }
-    
       }
-    ];
+    ]).then(function(inquirerResponse){
+     
+        //Now it has all your results from above
+        if(inquirerResponse.readyToPlay == true)
+        {
+			LetterInquirer();
+        }
+
+    });
 }
 
 
+function LetterInquirer()
+{
+  inquirer.prompt([
+    {
+        type: 'text',
+        name: 'playerName',
+        message: 'Please enter a letter for a World Religion?'
+	}]).then(function()
+	
+{  guessesRemaining--;
 
-//game starter
-function startGame(){
-guessesRemaining = 9;
-lettersAlreadyGuessedList = "";
-lettersAlreadyGuessedListArray = [];
- 
+        if(guessesRemaining > 0)
+        {
+			LetterInquirer();
+        }
+        else
+        {
+            console.log("Game Over");
+            //You can add another inquirer here and ask if they want to play again.
+		if(guessesRemaining===0){
+				console.log('YOU LOST!');
+				console.log("The correct Religion was: " + index);
+				losses++;
+				console.log("Wins: " + wins);
+				console.log("Losses: " + losses);
+				resetGame()
+			}else if ( userGuess === index){
+				console.log('YOU WON!.');
+				wins++;
+				console.log("Wins: " + wins);
+				console.log("Losses: " + losses);
+				resetGame();
+			}else{
+				resetGame();
+			}
+}
+});
+}
+
+
+// //game starter
+// function startGame(){
+// console.log("Game Started");
+// guessesRemaining = 9;
+// guessedWord = ""; 
+// if (guessedWord.length<worldReligions.length)
+// {
+// 	guessedWord=randomWord();
+
+// }else
+// console.log('YOU WON!.');
+
+// if (guessedWord){
+// 	word=new word(guessedWord);
+// 	word.LetterInquirer();
+// 	LetterInquirer();
+
+// }
+
+ function randomWord(){
 // Randomly selects a word and uses the `Word` constructor to store it
-    var index = Math.floor(Math.random() * worldReligions.length);
-    return worldReligions[index];
-
+    //once you enter return it doesn't go below it, so startQuestion() never runs  
+    worldReligions[index];
+    console.log(worldReligions[index]);
     startQuestion();
-
-}
+     
+};
 
 function resetGame() {
     userGuess ="";
-    lettersAlreadyGuessedListArray = [];
+    guessedWordArray = [];
     guessesRemaining = 9;
 }
 
+startQuestion();
 
-startGame();
-resetGame();
+
