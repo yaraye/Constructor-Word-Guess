@@ -35,7 +35,7 @@ var score=0;
 //Use Inquirer package to display game confirmation prompt to user.
 function startQuestion() {
 
-	console.log("Inquirer started");
+	console.log("Game started");
 	
 
 	inquirer.prompt([
@@ -66,7 +66,7 @@ function startQuestion() {
 }
 
 
-function LetterInquirer()
+function LetterInquirer(input)
 {
   inquirer.prompt([
     {
@@ -81,13 +81,10 @@ function LetterInquirer()
         if(guessesRemaining > 0)
         {
 			LetterInquirer();
+		}	
+		 
+		else if (input === worldReligions[index]){
 			
-         }
-        // else
-        // {
-        //     console.log("Game Over");
-            //You can add another inquirer here and ask if they want to play again.
-		else if (guessedWord === worldReligions[index]){
 				console.log('YOU WON!.');
 				wins++;
 				console.log("Wins: " + wins);
@@ -99,27 +96,25 @@ function LetterInquirer()
 					losses++;
 					console.log("Wins: " + wins);
 					console.log("Losses: " + losses);
-				
-					resetGame()
+					resetGame();
 				}else{
 				console.log("Game Over");
-			
-				resetGame();
 			}
-})
+		})
 };
 
 
- function randomWord(){
-// Randomly selects a word and uses the `Word` constructor to store it
-    //once you enter return it doesn't go below it, so startQuestion() never runs  
-    worldReligions[index];
-    console.log(worldReligions[index]);
+//  function randomWord(){
+// // Randomly selects a word and uses the `Word` constructor to store it
+//     //once you enter return it doesn't go below it, so startQuestion() never runs  
+//     worldReligions[index];
+//     console.log(worldReligions[index]);
    
      
-};
+// };
 
 function resetGame() {
+	console.log("Do you want to play agin?")
     userGuess ="";
     guessedWordArray = [];
 	guessesRemaining = 9;
